@@ -6,8 +6,9 @@
 #include <stdbool.h>
 #include <conio.h>
 #include <stdio.h>
-#include "stdutils.h"
+#include "command_executer.h"
 #include <string.h>
+#include <ctype.h>
 
 void *read_line(void) {
     int buffer_size = READ_LINE_BUFFER;
@@ -22,12 +23,11 @@ void *read_line(void) {
 
     while (true) {
         char current_char = getch();
-        if (current_char == 'q') { exit(EXIT_SUCCESS); }
+        if (current_char == EEXIST) { exit(EXIT_SUCCESS); }  // CTRL + Q
         if (current_char == '\b') {
             if (position > 0) {
-                // TODO: reprint all string without last symbol
-                _putch(current_char);
-                _putch(NULL);
+                printf("\b \b");
+                fflush(stdout);
                 buffer[position - 1] = (char) 0;
                 position --;
             }
