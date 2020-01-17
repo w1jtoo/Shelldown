@@ -6,7 +6,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-int help(char **args) {
+
+ExecuteResult help(char **args) {
     printf(
             "+------------------------------------------------------+\n"
             "|------------------------------------------------------|\n"
@@ -29,31 +30,31 @@ int help(char **args) {
             "|                                                      |\n"
             "|              type help to print cmd help             |\n"
             "+---------------------+--------------------------------+\n");
-    return SUCCESS_EXECUTED;
+    return executed_successful;
 }
 
-int program_exit(char **args) {
-    return ON_EXIT;
+ExecuteResult program_exit(char **args) {
+    return on_exit;
 }
 
 char *builtin_str[] = {"?", "exit"};
 
-int (*builtin_func[])(char **) = {&help, &program_exit};
+ExecuteResult (*builtin_func[])(char **) = {&help, &program_exit};
 
-int builtins_count() {
+unsigned int builtins_count() {
     return sizeof(builtin_str) / sizeof(char *);
 }
 
-int execute(char **args) {
+ExecuteResult execute(char **args) {
     if (args[0] == NULL) {
-        return SUCCESS_EXECUTED;
+        return executed_successful;
     }
     for (int i = 0; i < builtins_count(); i++) {
         if (strcmp(builtin_str[i], args[0]) == 0) {
             return (*builtin_func[i])(args);
         }
     }
-    return NOT_FOUND_IN_BUILTINS;
+    return not_in_builtins;
 }
 
 

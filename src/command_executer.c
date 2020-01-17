@@ -7,6 +7,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include "command_executer.h"
+#include "utils.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -29,7 +30,9 @@ void *read_line(void) {
                 printf("\b \b");
                 fflush(stdout);
                 buffer[position - 1] = (char) 0;
-                position --;
+                position--;
+            } else {
+                MessageBeep(MB_ICONWARNING); // TODO make cross platform function
             }
             continue;
         }
@@ -57,6 +60,9 @@ void *read_line(void) {
 }
 
 char **split_line(char *line) {
+    char *line_copy = malloc(sizeof(line));
+    strcpy(line_copy, line); // need not to mutate line, so copy it
+
     int buffer_size = TOKEN_BUFFER_SIZE;
     int position = 0;
     char **tokens = malloc(sizeof(char *) * buffer_size);
@@ -66,7 +72,7 @@ char **split_line(char *line) {
         fprintf(stderr, "Allocation error");
         exit(EXIT_FAILURE);
     }
-    token = strtok(line, TOKEN_DELIM);
+    token = strtok(line_copy, TOKEN_DELIM);
     while (token != NULL) {
         tokens[position] = token;
         position++;

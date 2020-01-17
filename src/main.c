@@ -11,16 +11,17 @@ void loop(void) {
     char **args;
     char current_directory[FILENAME_MAX];
     do {
-        get_current_directory( current_directory, FILENAME_MAX );
-        printf("%s> ", current_directory);
+        get_current_directory(current_directory, FILENAME_MAX);
+        printf("\nYou now here -> %s \n%s$%s>", current_directory, getenv("USERNAME"), getenv("COMPUTERNAME"));
         line = read_line();
         args = split_line(line);
 
         switch (execute(args)) {
-            case NOT_FOUND_IN_BUILTINS:
+            case not_in_builtins:
+                printf("%s\n", line);
                 system(line);
                 break;
-            case ON_EXIT:
+            case on_exit:
                 exit_status = true;
                 break;
             default:
@@ -28,6 +29,7 @@ void loop(void) {
         }
 
         free(line);
+        free(args);
     } while (!exit_status);
 }
 

@@ -7,16 +7,19 @@
 
 #include <stdbool.h>
 
-#define SUCCESS_EXECUTED 1
-#define NOT_FOUND_IN_BUILTINS 2
-#define ON_EXIT 3
+typedef enum {
+    not_in_builtins,
+    executed_successful,
+    on_exit
+} ExecuteResult;
 
-int help(char **args);
 
-int program_exit(char **args);
+ExecuteResult help(char **args);
 
-int builtins_count();
+ExecuteResult program_exit(char **args);
 
-int execute(char **args);
+unsigned int builtins_count();
+
+ExecuteResult execute(char **args);
 
 #endif //SHELLDOWN_BUILTINS_H
