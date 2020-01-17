@@ -7,7 +7,28 @@
 #include <string.h>
 
 int help(char **args) {
-    printf("I'm help.");
+    printf(
+            "+------------------------------------------------------+\n"
+            "|------------------------------------------------------|\n"
+            "||   ,+.  .  . ,++. ,    ,    ,+.   ,+.  ,   . .  .   ||\n"
+            "||  (   ` +  + +    +    +    +  \\ /   \\ + . + +\\ +   ||\n"
+            "||   `+.  +--+ ++   |    |    |  + +   + | ) ) | \\|   ||\n"
+            "||  .   ) +  + +    +    +    +  / \\   / +/+/  +  +   ||\n"
+            "||   `+'  '  ' `++' `++' `++' `+'   `+'  ' '   '  '   ||\n"
+            "|------------------------------------------------------|\n"
+            "+------------------------------------------------------+\n"
+            "|Shelldown is command-line interpreter superstructure  |\n"
+            "|with supporting all NT systems and commands. When     |\n"
+            "|shelldown get a command its check if it is in builtins|\n"
+            "|and after go to path (execute in cmd).                |\n"
+            "|Builtin commands:                                     |\n"
+            "|                                                      |\n"
+            "|              # cd   - change directory               |\n"
+            "|              # exit | safe close inter preter        |\n"
+            "|              # ?    | show this text                 |\n"
+            "|                                                      |\n"
+            "|              type help to print cmd help             |\n"
+            "+---------------------+--------------------------------+\n");
     return SUCCESS_EXECUTED;
 }
 

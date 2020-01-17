@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <ctype.h>
-#include <string.h>
 #include "builtins.h"
 #include "command_executer.h"
-
+#include "utils.h"
 
 void loop(void) {
     bool exit_status = false;
     char *line;
     char **args;
-
+    char current_directory[FILENAME_MAX];
     do {
-        printf("> ");
+        get_current_directory( current_directory, FILENAME_MAX );
+        printf("%s> ", current_directory);
         line = read_line();
         args = split_line(line);
 
