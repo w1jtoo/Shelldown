@@ -6,47 +6,74 @@
 #include <stdbool.h>
 #include <conio.h>
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 #include "command_executer.h"
 #include "utils.h"
-#include <string.h>
-#include <ctype.h>
+#include "tui_controller.h"
+
+void initialize(void) {
+    console_initialize();
+}
+
 
 void *read_line(void) {
-    int buffer_size = READ_LINE_BUFFER;
-    unsigned int position = 0;
-    char *buffer = malloc(sizeof(char) * buffer_size);
-    char current_char;
+    int          buffer_size = READ_LINE_BUFFER;
+    unsigned int position    = 0;
+    char         *buffer     = malloc(sizeof(char) * buffer_size);
+
+    for (int i = 0; i < buffer_size; i++) { buffer[i] = '\0'; }
+
+    int current_char;
 
     if (!buffer_size) {
         printf("can't allocate memory. ");
         exit(EXIT_FAILURE);
     }
-
+    update_line_start();
     while (true) {
-        char current_char = getch();
-        if (current_char == EEXIST) { exit(EXIT_SUCCESS); }  // CTRL + Q
-        if (current_char == '\b') {
-            if (position > 0) {
-                printf("\b \b");
-                fflush(stdout);
-                buffer[position - 1] = (char) 0;
-                position--;
-            } else {
-                MessageBeep(MB_ICONWARNING); // TODO make cross platform function
-            }
-            continue;
+        current_char = _getch();
+
+        switch (current_char) {
+            case 0: // NUMPAD
+            case 224: // DEFAULT
+                switch (_getch()) {
+                    case DOWN_ARROW:
+                    case UP_ARROW:
+                    case LEFT_ARROW:
+                    case RIGHT_ARROW:
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case DC1: // CTRL + Q
+                exit(EXIT_SUCCESS);
+            case BACKSPACE:
+                if (position > 0) {
+//                    printf("\b \b");
+//                    fflush(stdout);
+                    position--;
+                    buffer[position] = '\0';
+                } else {
+                    MessageBeep(MB_ICONWARNING); // TODO make cross platform function
+                }
+                break;
+            case CARRIAGE_RETURN:
+                buffer[position] = SPECIAL_SYMBOL;
+//            _putch( '\r' );    // Carriage return
+                _putch('\n');    // Line feed
+                return buffer;
+            case HORIZONTAL_TAB:
+                printf("\nhint here\n");
+                break;
+            default:
+                buffer[position] = (char) current_char;
+                position++;
+                break;
         }
 
-//        TODO: if (current_char == '\t') { printf("hint here"); }
-
-        if (current_char == '\r') {
-            buffer[position] = SPECIAL_SYMBOL;
-//            _putch( '\r' );    // Carriage return
-            _putch('\n');    // Line feed
-            return buffer;
-        } else { buffer[position] = current_char; }
-        position++;
-
+        update(buffer, position, buffer_size);
         if (position > buffer_size) {
             buffer_size += READ_LINE_BUFFER;
             buffer = realloc(buffer, buffer_size);
@@ -55,7 +82,6 @@ void *read_line(void) {
                 exit(EXIT_FAILURE);
             }
         }
-        _putch(current_char);
     }
 }
 
@@ -63,9 +89,9 @@ char **split_line(char *line) {
     char *line_copy = malloc(sizeof(line));
     strcpy(line_copy, line); // need not to mutate line, so copy it
 
-    int buffer_size = TOKEN_BUFFER_SIZE;
-    int position = 0;
-    char **tokens = malloc(sizeof(char *) * buffer_size);
+    int  buffer_size = TOKEN_BUFFER_SIZE;
+    int  position    = 0;
+    char **tokens    = malloc(sizeof(char *) * buffer_size);
     char *token;
 
     if (!tokens) {

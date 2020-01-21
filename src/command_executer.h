@@ -5,6 +5,19 @@
 #ifndef SHELLDOWN_COMMAND_EXECUTER_H
 #define SHELLDOWN_COMMAND_EXECUTER_H
 
+#define DC1 17
+
+#define LEFT_ARROW 75
+#define UP_ARROW 72
+#define RIGHT_ARROW 77
+#define DOWN_ARROW 80
+
+#define BACKSPACE 8
+#define CARRIAGE_RETURN 13
+#define VERTICAL_TAB 11
+#define HORIZONTAL_TAB 9
+
+
 #define TOKEN_BUFFER_SIZE 64
 
 #define TOKEN_DELIM " \t\r\n\a"
@@ -12,6 +25,8 @@
 #define READ_LINE_BUFFER 1 << 10
 #define SPECIAL_SYMBOL '\0'
 //#define ETX 3
+
+void initialize(void);
 
 void *read_line(void);
 

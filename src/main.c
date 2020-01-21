@@ -34,7 +34,7 @@ void loop(void) {
 }
 
 int main(void) {
+    initialize();
     loop();
     return EXIT_SUCCESS;
 }
-
