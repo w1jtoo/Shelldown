@@ -18,7 +18,7 @@ void loop(void) {
 
         switch (execute(args)) {
             case not_in_builtins:
-                printf("%s\n", line);
+//                printf("%s\n", line);
                 system(line);
                 break;
             case on_exit:
@@ -30,6 +30,7 @@ void loop(void) {
 
         free(line);
         free(args);
+        fflush(stdout);
     } while (!exit_status);
 }
 

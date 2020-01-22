@@ -26,8 +26,8 @@ ExecuteResult help(char **args) {
             "|Builtin commands:                                     |\n"
             "|                                                      |\n"
             "|              # cd   - change directory               |\n"
-            "|              # exit | safe close inter preter        |\n"
-            "|              # ?    | show this text                 |\n"
+            "|              # exit - safe close interpreter         |\n"
+            "|              # ?    - show this text                 |\n"
             "|                                                      |\n"
             "|              type help to print cmd help             |\n"
             "+---------------------+--------------------------------+\n");
