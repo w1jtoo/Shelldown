@@ -5,6 +5,7 @@
 #include <corecrt_wstdio.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <windows.h>
 
 COORD               line_start = {0, 0};
 HANDLE              console_handle;

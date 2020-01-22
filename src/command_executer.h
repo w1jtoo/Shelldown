@@ -22,7 +22,7 @@
 
 #define TOKEN_DELIM " \t\r\n\a"
 
-#define READ_LINE_BUFFER 1 << 10
+#define READ_LINE_BUFFER 1 << 5
 #define SPECIAL_SYMBOL '\0'
 //#define ETX 3
 

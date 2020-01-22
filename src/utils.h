@@ -20,5 +20,10 @@
 #define get_current_directory getcwd
 #endif
 
+void insert_to_array(char *array, unsigned short position, char ch, unsigned int buffer_size);
+
+void delete_symbol(char *array, unsigned short position, unsigned int buffer_size);
+
+void make_warning_sound(void);
 
 #endif //SHELLDOWN_UTILS_H

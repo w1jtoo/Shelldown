@@ -5,6 +5,7 @@
 #include "builtins.h"
 #include <stdbool.h>
 #include <string.h>
+#include <direct.h>
 
 
 ExecuteResult help(char **args) {
@@ -37,13 +38,26 @@ ExecuteResult program_exit(char **args) {
     return on_exit;
 }
 
-char *builtin_str[] = {"?", "exit"};
+ExecuteResult change_directory(char **args) {
+    if (args[1] == NULL) {
+        fprintf(stderr, "Shelldown: expected argument to \"cd\"\n");
+    } else {
+        if (_chdir(args[1]) != 0) {
+            perror("can't change directory");
+        }
+    }
+    return executed_successful;
+}
 
-ExecuteResult (*builtin_func[])(char **) = {&help, &program_exit};
+char *builtin_str[] = {"?", "exit", "cd"};
+
+ExecuteResult (*builtin_func[])(char **) = {&help, &program_exit, &change_directory};
+
 
 unsigned int builtins_count() {
     return sizeof(builtin_str) / sizeof(char *);
 }
+
 
 ExecuteResult execute(char **args) {
     if (args[0] == NULL) {

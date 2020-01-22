@@ -18,9 +18,10 @@ void initialize(void) {
 
 
 void *read_line(void) {
-    int          buffer_size = READ_LINE_BUFFER;
-    unsigned int position    = 0;
-    char         *buffer     = malloc(sizeof(char) * buffer_size);
+    int          buffer_size  = READ_LINE_BUFFER;
+    unsigned int position     = 0;
+    char         *buffer      = malloc(sizeof(char) * buffer_size);
+    int          max_position = 0;
 
     for (int i = 0; i < buffer_size; i++) { buffer[i] = '\0'; }
 
@@ -40,8 +41,14 @@ void *read_line(void) {
                 switch (_getch()) {
                     case DOWN_ARROW:
                     case UP_ARROW:
+                        break;
                     case LEFT_ARROW:
+                        if (position > 0) position--;
+                        else make_warning_sound();
+                        break;
                     case RIGHT_ARROW:
+                        if (position < max_position) position++;
+                        else make_warning_sound();
                         break;
                     default:
                         break;
@@ -54,13 +61,12 @@ void *read_line(void) {
 //                    printf("\b \b");
 //                    fflush(stdout);
                     position--;
-                    buffer[position] = '\0';
+                    delete_symbol(buffer, position, max_position);
                 } else {
                     MessageBeep(MB_ICONWARNING); // TODO make cross platform function
                 }
                 break;
             case CARRIAGE_RETURN:
-                buffer[position] = SPECIAL_SYMBOL;
 //            _putch( '\r' );    // Carriage return
                 _putch('\n');    // Line feed
                 return buffer;
@@ -68,15 +74,23 @@ void *read_line(void) {
                 printf("\nhint here\n");
                 break;
             default:
-                buffer[position] = (char) current_char;
+                if (!isprint(current_char)) break;
+
+                insert_to_array(buffer, position, (char) current_char, max_position);
+                max_position++;
                 position++;
                 break;
         }
 
-        update(buffer, position, buffer_size);
-        if (position > buffer_size) {
+
+        if (position > max_position) max_position = (int) position;
+        update(buffer, position, max_position);
+
+        if (max_position + 1 > buffer_size) {
+            int old_size = buffer_size;
             buffer_size += READ_LINE_BUFFER;
-            buffer = realloc(buffer, buffer_size);
+            buffer       = realloc(buffer, buffer_size);
+            for (; old_size < buffer_size; old_size++) { buffer[old_size] = '\0'; }
             if (!buffer) {
                 fprintf(stderr, "allocation error\n"); // TODO ADD to logger
                 exit(EXIT_FAILURE);
