@@ -5,6 +5,8 @@
 #ifndef SHELLDOWN_COMMAND_EXECUTER_H
 #define SHELLDOWN_COMMAND_EXECUTER_H
 
+#include "utils.h"
+
 #define DC1 17
 
 #define LEFT_ARROW 75
@@ -26,10 +28,14 @@
 #define SPECIAL_SYMBOL '\0'
 //#define ETX 3
 
+struct Node *buffers_head;
+
 void initialize(void);
 
 void *read_line(void);
 
 char **split_line(char *line);
+
+struct Node *buffer_tail;
 
 #endif //SHELLDOWN_COMMAND_EXECUTER_H

@@ -23,27 +23,35 @@ void console_initialize(void) {
     GetConsoleCursorInfo(console_handle, &console_info);
 }
 
-void clear_part(unsigned int start, unsigned int finish) {
-    int i = start;
-    for (; i < finish; i++) {
-        printf("\b \b");
-        fflush(stdout);
-    }
-}
-
-#include <windows.h>
-
-void update(char *buffer, unsigned int cursor_position, int buffer_length) {
+void clear_part(unsigned int max_length) {
     CONSOLE_SCREEN_BUFFER_INFO current_position;
     int                        index = 0;
     GetConsoleScreenBufferInfo(console_handle, &current_position);
+    COORD position = current_position.dwCursorPosition;
+
+    console_info.bVisible = false;                        // hide cursor
+    SetConsoleCursorInfo(console_handle, &console_info);  // hide cursor
+    SetConsoleCursorPosition(console_handle, line_start);
+
+    for (; index < max_length; index++) {
+        putchar(' ');
+    }
+
+    console_info.bVisible = true;
+    SetConsoleCursorInfo(console_handle, &console_info);
+    SetConsoleCursorPosition(console_handle, position);
+}
+
+
+void update(char *buffer, unsigned int cursor_position, unsigned int max_length) {
+    int   index    = 0;
     COORD position = {line_start.X + cursor_position, line_start.Y};
 
     console_info.bVisible = false;                        // hide cursor
     SetConsoleCursorInfo(console_handle, &console_info);  // hide cursor
     SetConsoleCursorPosition(console_handle, line_start);
 
-    for (; index < buffer_length; index++) {
+    for (; index < max_length; index++) {
         putchar(buffer[index]);
     }
 

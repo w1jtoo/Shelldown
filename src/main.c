@@ -28,7 +28,7 @@ void loop(void) {
                 break;
         }
 
-        free(line);
+//        free(line);
         free(args);
         fflush(stdout);
     } while (!exit_status);
@@ -39,3 +39,8 @@ int main(void) {
     loop();
     return EXIT_SUCCESS;
 }
+/* TODO:
+ *  > pushing value after executing
+ *  > FIX empty requests
+ *  > think about memory leak
+*/

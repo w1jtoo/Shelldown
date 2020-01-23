@@ -26,4 +26,25 @@ void delete_symbol(char *array, unsigned short position, unsigned int buffer_siz
 
 void make_warning_sound(void);
 
+struct Buffer {
+    char         *value;
+    unsigned int max_position;
+    unsigned int cursor_position;
+    unsigned int buffer_size;
+};
+
+struct Node {
+    struct Buffer *buffer;
+    struct Node   *next;
+    struct Node   *prev;
+};
+
+void print_list(struct Node *node);
+
+void constrict(struct Node *node);
+
+void append(struct Node **head_ref, struct Buffer *buffer_ref);
+
+void push(struct Node **head_ref, struct Buffer *buffer_ref);
+
 #endif //SHELLDOWN_UTILS_H

@@ -5,7 +5,9 @@
 #ifndef SHELLDOWN_TUI_CONTROLLER_H
 #define SHELLDOWN_TUI_CONTROLLER_H
 
-void update(char *buffer, unsigned int cursor_position, int buffer_length);
+void update(char *buffer, unsigned int cursor_position, unsigned int max_length);
+
+void clear_part(unsigned int max_length);
 
 void update_line_start(void);
 
