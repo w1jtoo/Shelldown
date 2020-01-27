@@ -32,12 +32,20 @@ void *read_line(void) {
     buffer->value           = buffer_values;
     buffer->max_position    = max_position;
     buffer->cursor_position = position;
-
-    append(&buffers_head, buffer);
-    constrict(buffers_head);
+    buffer->buffer_size     = buffer_size;
 
     struct Node *buffer_pointer = buffers_head; // initialize pointer to current command
+
+    if (buffers_head == NULL) {
+        append(&buffers_head, buffer);
+        buffer_pointer = buffers_head;
+    }
     while (buffer_pointer->next != NULL) {
+        buffer_pointer = buffer_pointer->next; // scrolling list of buffers down
+    };
+
+    if (!is_char_array_empty(buffer_pointer->buffer->value, '\0', buffer_pointer->buffer->buffer_size)) {
+        append(&buffers_head, buffer);
         buffer_pointer = buffer_pointer->next;
     }
 

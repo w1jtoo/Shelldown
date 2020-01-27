@@ -12,6 +12,7 @@
 #define get_current_directory _getcwd
 
 #include <windows.h>
+#include <stdbool.h>
 
 #endif
 
@@ -46,5 +47,7 @@ void constrict(struct Node *node);
 void append(struct Node **head_ref, struct Buffer *buffer_ref);
 
 void push(struct Node **head_ref, struct Buffer *buffer_ref);
+
+bool is_char_array_empty(char *array, char filler, unsigned int size);
 
 #endif //SHELLDOWN_UTILS_H

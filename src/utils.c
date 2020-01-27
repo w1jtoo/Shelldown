@@ -23,6 +23,24 @@ void delete_symbol(char *array, unsigned short position, unsigned int buffer_siz
 }
 
 
+void delete_node(struct Node *node) {
+    if (node->prev == NULL && node->next == NULL) return; // strange branch
+
+    if (node->next == NULL) {
+        node->prev->next = NULL;
+//        free(node);
+        return;
+    }
+    if (node->prev == NULL) {
+        node->next->prev = NULL;
+//        free(node);
+        return;
+    }
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+//    free(node);
+}
+
 void append(struct Node **head_ref, struct Buffer *buffer_ref) {
     /* 1. allocate node */
     struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
@@ -98,27 +116,26 @@ void print_list(struct Node *node) {
     }
 }
 
-bool is_char_array_empty(char *array, char filler) {
-    unsigned int len   = sizeof(*array) / sizeof(array[0]);
-    for (int     index = 0; index < len; index++) {
-        if (array[index] != filler) return false;
+bool is_char_array_empty(char *array, char filler, unsigned int size) {
+    for (int index = 0; index < size; ++index) {
+        if (array[index] != filler) {
+            return false;
+        }
     }
     return true;
 }
 
 void constrict(struct Node *node) {
-    while (node != NULL && node->next != NULL) {
-        if (is_char_array_empty(node->buffer->value, '\0') &&
-            is_char_array_empty(node->next->buffer->value, '\0')) {
-            if (node->prev != NULL) {
-                node->prev->next = node->next;
-            }
-
-            node->next = node->prev;
-//            free(node);
-        }
-        node = node->next;
-    }
+    // NOT IMPLEMENTED
+//    while (node != NULL && node->next != NULL) {
+//        if (is_char_array_empty(node->buffer->value, '\0') &&
+//            is_char_array_empty(node->next->buffer->value, '\0')) {
+//            delete_node(node->prev);
+////            free(node);
+//        }
+//        node = node->next;
+//    }
+    exit(EXIT_FAILURE);
 }
 
 void make_warning_sound(void) {
